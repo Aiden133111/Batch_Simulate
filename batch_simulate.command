@@ -25,7 +25,7 @@ fi
 echo "Running Randomize RTP on selected directory and subdirectories..."
 #/Users/aidenmcfadden/Desktop/CLI-Audit/Randomized_RTP.py
 #
-python3 "$SELF_DIR/Randomized_RTP.py" --file "$SELECTED_DIR" --assume_yes
+python3 "$SELF_DIR/Resources/Randomized_RTP.py" --file "$SELECTED_DIR" --assume_yes
 
 if [ $? -eq 0 ]; then
     echo "Randomization completed successfully."
@@ -36,9 +36,9 @@ fi
 
 echo "Running Mass Simulation on selected directory and subdirectories..."
 if [ -z "$LABWARE_DIR" ]; then
-    python3 "$SELF_DIR/Mass_Simulation.py" --silent --assume_yes
+    python3 "$SELF_DIR/Resources/Mass_Simulation.py" --silent --assume_yes --cleanup-generated
 else
-    python3 "$SELF_DIR/Mass_Simulation.py" --silent --labware "$LABWARE_DIR" --assume_yes
+    python3 "$SELF_DIR/Resources/Mass_Simulation.py" --silent --labware "$LABWARE_DIR" --assume_yes --cleanup-generated
 fi
 
 exit 0

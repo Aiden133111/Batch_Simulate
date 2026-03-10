@@ -70,7 +70,7 @@ if ($LabwareDialog.ShowDialog() -eq "OK") {
 $SELF_DIR = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
 Write-Host "Running Randomize RTP on selected directory and subdirectories..."
-python "$SELF_DIR\Randomized_RTP.py" --file "$SELECTED_DIR" --assume_yes
+python "$SELF_DIR\Resources\Randomized_RTP.py" --file "$SELECTED_DIR" --assume_yes
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Randomization completed successfully."
 } else {
@@ -80,9 +80,9 @@ if ($LASTEXITCODE -eq 0) {
 
 Write-Host "Running Mass Simulation on selected directory and subdirectories..."
 if ($LABWARE_DIR) {
-    python "$SELF_DIR\Mass_Simulation.py" --silent --labware "$LABWARE_DIR" --assume_yes
+    python "$SELF_DIR\Resources\Mass_Simulation.py" --silent --labware "$LABWARE_DIR" --assume_yes --cleanup-generated
 } else {
-    python "$SELF_DIR\Mass_Simulation.py" --silent --assume_yes
+    python "$SELF_DIR\Resources\Mass_Simulation.py" --silent --assume_yes --cleanup-generated
 }
 
 exit 0

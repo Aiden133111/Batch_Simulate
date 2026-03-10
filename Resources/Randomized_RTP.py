@@ -172,7 +172,8 @@ if __name__ == '__main__':
 		absolute_protocols_path = Path(file).parent
 	
 	current_script_dir = os.path.dirname(__file__)
-	OUTPUT_DIR =  Path(current_script_dir) / "generated_protocols" # The directory where new protocol files will be saved
+	project_root = Path(current_script_dir).parent
+	OUTPUT_DIR = project_root / "generated_protocols" # The directory where new protocol files will be saved
 	output_dir = OUTPUT_DIR if output_dir == None else Path(output_dir)
 	if not output_dir.exists():
 		output_dir.mkdir()

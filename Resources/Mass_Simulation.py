@@ -20,16 +20,19 @@ Parser.add_argument('--labware', '-L', type=str, action='store', required=False,
 Parser.add_argument('--output', '-o', type=str, action='store', required=False, help='Absolute Directory to save generated protocol files, will default to local "generated_protocols" if not specified')
 Parser.add_argument('--assume_yes', '-y', action='store_true', help='Assume yes for all prompts (e.g., file creation confirmation)')
 Parser.add_argument('--silent', '-s', action='store_true', help='Suppress all output except for the final report')
+Parser.add_argument('--cleanup-generated', action='store_true', help='After writing the report, delete all files in the simulated protocols folder (e.g. generated_protocols) to avoid duplication on repeated runs')
 ParsedArgs = Parser.parse_args()
 file = ParsedArgs.file
 custom_labware = ParsedArgs.labware
 output_dir = ParsedArgs.output
 assume_yes = ParsedArgs.assume_yes
 silent = ParsedArgs.silent
+cleanup_generated = ParsedArgs.cleanup_generated
 current_script_dir = os.path.dirname(__file__)
-report_directory = os.path.join(current_script_dir, "simulation_report.txt") if output_dir is None else output_dir
-absolute_protocols_path = os.path.join(current_script_dir, 'generated_protocols') if file is None else file
-simulation_raw_directory = Path(os.path.join(current_script_dir,  "simulation_raw_outputs"))
+project_root = Path(current_script_dir).parent
+report_directory = os.path.join(project_root, "simulation_report.txt") if output_dir is None else output_dir
+absolute_protocols_path = os.path.join(project_root, 'generated_protocols') if file is None else file
+simulation_raw_directory = Path(os.path.join(project_root,  "simulation_raw_outputs"))
 if not silent:
 	show_all_results = input("\nPlease enter (y/n) if you would like to display successful results: ").lower().strip() == 'y' if not assume_yes else True
 else:
@@ -137,3 +140,9 @@ with open(report_directory, 'w') as report_file:
 			report_file.write(f"\t  Parameters For Failed Run:\n")
 			for line in parameter_infromation:
 				report_file.write(f"\t\t{line}\n")
+
+if cleanup_generated and os.path.isdir(absolute_protocols_path):
+	shutil.rmtree(absolute_protocols_path)
+	Path(absolute_protocols_path).mkdir()
+	if not silent:
+		print(f"\n--- Cleaned '{absolute_protocols_path}' (--cleanup-generated). ---")
